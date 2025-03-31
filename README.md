@@ -18,7 +18,7 @@ SnapSense is a web application that allows users to upload an image and ask ques
 ## 🛠 Installation
 1. Clone the repository:
    ```sh
-   git clone https://github.com/yourusername/snapsense.git
+   git clone https://github.com/krish2213/snapsense.git
    cd snapsense
    ```
 2. Install dependencies:
