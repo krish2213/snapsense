@@ -7,6 +7,7 @@ const app = express();
 const PORT = 3000;
 const hf = new HfInference(process.env.HF_TOKEN); 
 app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
 app.use(express.static("public"));
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
