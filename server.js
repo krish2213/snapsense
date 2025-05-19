@@ -15,21 +15,22 @@ const upload = multer({ storage: storage });
 app.get("/", (req, res) => {
     res.render("index");
 });
-fetch('/analyze', {
-  method: 'POST',
-  body: formData
-})
-.then(async response => {
-  if (!response.ok) {
-    const errorMessage = await response.text(); // safely read plain text
-    throw new Error(errorMessage);
-  }
-  const data = await response.json(); // only do this if response is OK
-  console.log('Answer:', data.answer);
-})
-.catch(error => {
-  console.error('Fetch error:', error.message);
+app.post("/analyze", upload.single("image"), async (req, res) => {
+    try {
+        if (!req.file) return res.status(400).json({ error: "No image uploaded." });
+
+        const response = await hf.imageToText({
+            data: req.file.buffer, 
+            model: "Salesforce/blip-image-captioning-base",
+        });
+
+        res.json({ answer: response.generated_text || "No response received." });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Error processing the request." });
+    }
 });
+
 
 
 app.listen(PORT || process.env.PORT, () => {
