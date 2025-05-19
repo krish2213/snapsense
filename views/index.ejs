@@ -1,110 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Snap Sense</title>
-    <style>
-        body {
-            background: #000;
-            color: #fff;
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-        }
-    
-        h2 {
-            font-size: 2rem;
-            margin-top: 20px;
-            color: #10dbea;
-        }
-    
-        p {
-            font-size: 1rem;
-            margin-bottom: 20px;
-            color: #10dbea;
-        }
-    
-        input, button {
-            padding: 12px 20px;
-            margin: 12px;
-            border-radius: 10px;
-            border: 2px solid #fff;
-            background-color: transparent;
-            color: #fff;
-            font-size: 1rem;
-            outline: none;
-            transition: all 0.3s ease;
-        }
-    
-        input:focus, button:hover {
-            box-shadow: 0 0 10px 4px #00bfff; 
-            border-color: #00bfff;
-            background-color: rgba(0, 191, 255, 0.1); 
-        }
-    
-        button {
-            cursor: pointer;
-        }
-    
-        #preview {
-            display: block;
-            margin: 20px auto;
-            width: 300px;
-            border-radius: 15px;
-            transition: all 0.3s ease;
-        }
-    
-        #preview:hover {
-            box-shadow: 0 0 15px 6px #00bfff; 
-        }
-    
-        #response {
-            font-size: 1.2rem;
-            color: #fff; 
-            margin-top: 20px;
-        }
-    </style>
-    
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Snap Sense</title>
+  <style>
+    body {
+      background: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    h2 {
+      font-size: 2rem;
+      margin-top: 20px;
+      color: #10dbea;
+    }
+
+    p {
+      font-size: 1rem;
+      margin-bottom: 20px;
+      color: #10dbea;
+    }
+
+    input, button {
+      padding: 12px 20px;
+      margin: 12px;
+      border-radius: 10px;
+      border: 2px solid #fff;
+      background-color: transparent;
+      color: #fff;
+      font-size: 1rem;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    input:focus, button:hover {
+      box-shadow: 0 0 10px 4px #00bfff;
+      border-color: #00bfff;
+      background-color: rgba(0, 191, 255, 0.1);
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    #preview {
+      display: block;
+      margin: 20px auto;
+      width: 300px;
+      border-radius: 15px;
+      transition: all 0.3s ease;
+    }
+
+    #preview:hover {
+      box-shadow: 0 0 15px 6px #00bfff;
+    }
+
+    #response {
+      font-size: 1.2rem;
+      color: #fff;
+      margin-top: 20px;
+    }
+  </style>
 </head>
 <body>
-    <h2>Snap Sense</h2>
-    <p>Upload an image and ask a question about it.</p>
+  <h2>Snap Sense</h2>
+  <p>Upload an image and ask a question about it.</p>
+  <br><br><br>
+
+  <form id="uploadForm" enctype="multipart/form-data">
+    <input type="file" id="imageInput" accept="image/*" required />
     <br><br><br>
-    <form id="uploadForm" enctype="multipart/form-data">
-        <input type="file" id="imageInput" accept="image/*" required>
-        <br><br><br>
-        <input type="text" id="question" placeholder="Ask a question..." required>
-        <br><br><br>
-        <button type="submit">Get Answer</button>
-    </form>
-    <img id="preview" style="display: none;">
-    <p id="response"></p>
+    <input type="text" id="question" placeholder="Ask a question..." required />
+    <br><br><br>
+    <button type="submit">Get Answer</button>
+  </form>
 
-    <script>
-        document.getElementById("imageInput").addEventListener("change", function(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById("preview").src = e.target.result;
-                    document.getElementById("preview").style.display = "block";
-                };
-                reader.readAsDataURL(file);
-            }
+  <img id="preview" style="display: none;" />
+  <p id="response"></p>
+
+  <script>
+    document.getElementById("imageInput").addEventListener("change", function(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const preview = document.getElementById("preview");
+          preview.src = e.target.result;
+          preview.style.display = "block";
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    document.getElementById("uploadForm").addEventListener("submit", async function(event) {
+      event.preventDefault();
+
+      const imageFile = document.getElementById("imageInput").files[0];
+      const questionText = document.getElementById("question").value;
+
+      if (!imageFile || !questionText) {
+        document.getElementById("response").innerText = "Please upload an image and ask a question.";
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("image", imageFile);
+      formData.append("question", questionText);
+
+      try {
+        const response = await fetch("/analyze", {
+          method: "POST",
+          body: formData
         });
 
-        document.getElementById("uploadForm").addEventListener("submit", async function(event) {
-            event.preventDefault();
-            const formData = new FormData();
-            formData.append("image", document.getElementById("imageInput").files[0]);
-            formData.append("question", document.getElementById("question").value);
-
-            const response = await fetch("/analyze", { method: "POST", body: formData });
-            const data = await response.json();
-            document.getElementById("response").innerText = data.answer;
-        });
-    </script>
+        const data = await response.json();
+        document.getElementById("response").innerText = data.answer || "No answer received.";
+      } catch (err) {
+        document.getElementById("response").innerText = "Error processing request.";
+        console.error(err);
+      }
+    });
+  </script>
 </body>
 </html>
