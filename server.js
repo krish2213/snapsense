@@ -19,10 +19,17 @@ app.post("/analyze", upload.single("image"), async (req, res) => {
     try {
         if (!req.file) return res.status(400).json({ error: "No image uploaded." });
 
-        const response = await hf.imageToText({
+        console.log("🔁 Calling Hugging Face...");
+
+const response = await hf.imageToText({
   data: req.file.buffer,
-  model: "Salesforce/blip-image-captioning-large",
+  model: "Salesforce/blip-image-captioning-large"
 });
+
+console.log("✅ HF Response:", response);
+
+res.json({ answer: response.generated_text || "No answer received." });
+
 
 
         res.json({ answer: response.generated_text || "No response received." });
