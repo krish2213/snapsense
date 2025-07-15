@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Snap Sense</title>
   <style>
     body {
@@ -26,7 +27,8 @@
       color: #10dbea;
     }
 
-    input, button {
+    input,
+    button {
       padding: 12px 20px;
       margin: 12px;
       border-radius: 10px;
@@ -38,7 +40,8 @@
       transition: all 0.3s ease;
     }
 
-    input:focus, button:hover {
+    input:focus,
+    button:hover {
       box-shadow: 0 0 10px 4px #00bfff;
       border-color: #00bfff;
       background-color: rgba(0, 191, 255, 0.1);
@@ -61,12 +64,26 @@
     }
 
     #response {
-      font-size: 1.2rem;
-      color: #fff;
-      margin-top: 20px;
+      padding: 1rem;
+      margin: 1rem auto;
+      max-width: 600px;
+      background-color: #f9f9f9;
+      /* Light background */
+      border: 1px solid #ddd;
+      /* Subtle border */
+      border-radius: 8px;
+      /* Rounded corners */
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-size: 1rem;
+      color: #333;
+      /* Dark text */
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      /* Soft shadow */
+      transition: all 0.3s ease;
     }
   </style>
 </head>
+
 <body>
   <h2>Snap Sense</h2>
   <p>Upload an image and ask a question about it.</p>
@@ -84,11 +101,11 @@
   <p id="response"></p>
 
   <script>
-    document.getElementById("imageInput").addEventListener("change", function(event) {
+    document.getElementById("imageInput").addEventListener("change", function (event) {
       const file = event.target.files[0];
       if (file) {
         const reader = new FileReader();
-        reader.onload = function(e) {
+        reader.onload = function (e) {
           const preview = document.getElementById("preview");
           preview.src = e.target.result;
           preview.style.display = "block";
@@ -97,7 +114,7 @@
       }
     });
 
-    document.getElementById("uploadForm").addEventListener("submit", async function(event) {
+    document.getElementById("uploadForm").addEventListener("submit", async function (event) {
       event.preventDefault();
 
       const imageFile = document.getElementById("imageInput").files[0];
@@ -127,4 +144,5 @@
     });
   </script>
 </body>
+
 </html>
