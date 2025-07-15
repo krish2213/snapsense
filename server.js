@@ -54,6 +54,6 @@ app.post("/analyze", upload.single("image"), async (req, res) => {
 
 
 
-app.listen(PORT || process.env.PORT, (Sale) => {
+app.listen(PORT || process.env.PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
