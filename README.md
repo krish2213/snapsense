@@ -5,11 +5,11 @@ SnapSense is a web application that allows users to upload an image and ask ques
 ## ✨ Features
 - 📷 Upload an image and interact with it through questions.
 - 🤖 Generates accurate image captions and answers using AI.
-- 🚀 Utilizes **Salesforce's BLIP Image Captioning Model** for intelligent responses.
+- ⚡ Powered by **Google's Gemini 2.0 Flash** multimodal model for intelligent responses.
 - 🌍 Deployed on **Vercel** for seamless access.
 
 ## 🛠 Tech Stack
-- **Backend:** Hugging Face API with `Salesforce/blip-image-captioning-base`
+- **Backend:** Google Gemini API (`gemini-2.0-flash`)
 - **Frontend & Deployment:** Vercel
 
 ## 🌐 Live Demo
@@ -25,20 +25,20 @@ SnapSense is a web application that allows users to upload an image and ask ques
    ```sh
    npm install
    ```
-3. Add your **Hugging Face Token** in the environment variables:
+3. Add your **Gemini API Key** in the environment variables:
    ```sh
-   echo "HF_TOKEN=your_huggingface_token" > .env.local
+   echo "GEMINI_API_KEY=your_gemini_api_key" > .env.local
    ```
 4. Run the development server:
    ```sh
    npm run dev
    ```
-5. Open [localhost:3000](http://localhost:3000) in your browser.
+5. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## 🎯 Usage
 1. 📤 Upload an image.
 2. ❓ Ask questions related to the image.
-3. 🤓 Get AI-generated responses based on the image content.
+3. 🤓 Get AI-generated responses based on the image content using Gemini 2.0 Flash.
 
 
 ## 📧 Contact
